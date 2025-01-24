@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Big Number Simulator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Big Number Simulator</h1>
+    
+    <div class="controls">
+      <div class="input-group">
+        <label for="mantissa">Starting Mantissa:</label>
+        <input type="text" id="mantissa" value="1e15">
+      </div>
+      
+      <div class="input-group">
+        <label for="exponent">Starting Exponent:</label>
+        <input type="number" id="exponent" value="308">
+      </div>
+      
+      <div class="input-group">
+        <label for="steps">Number of Steps:</label>
+        <input type="number" id="steps" value="100">
+      </div>
+
+      <div class="input-group">
+        <label for="stepSize">Step Size:</label>
+        <input type="text" id="stepSize" value="1">
+      </div>
+
+      <button id="simulate">Simulate</button>
+    </div>
+
+    <div class="display-options">
+      <h3>Display Options</h3>
+      <label>
+        <input type="radio" name="displayMode" value="plain" checked>
+        Plain Text
+      </label>
+      <label>
+        <input type="radio" name="displayMode" value="bars">
+        Animated Bars
+      </label>
+      <label>
+        <input type="radio" name="displayMode" value="graph">
+        Line Graph
+      </label>
+    </div>
+
+    <div class="output-container">
+      <div id="plainOutput" class="output-panel active"></div>
+      <div id="barOutput" class="output-panel">
+        <div class="bar-container"></div>
+      </div>
+      <div id="graphOutput" class="output-panel">
+        <canvas id="graphCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="main.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
