@@ -12,6 +12,9 @@ class SimulationController {
       bars: new BarRenderer(document.getElementById('barOutput')),
       graph: new GraphRenderer(document.getElementById('graphCanvas'))
     };
+    // Set initial display mode
+    const initialMode = document.querySelector('input[name="displayMode"]:checked').value;
+    this.switchDisplayMode(initialMode);
   }
 
   bindElements() {
@@ -21,6 +24,7 @@ class SimulationController {
     this.stepSizeInput = document.getElementById('stepSize');
     this.simulateButton = document.getElementById('simulate');
     this.displayModeInputs = document.getElementsByName('displayMode');
+    this.outputPanels = document.querySelectorAll('.output-panel');
   }
 
   setupEventListeners() {
@@ -31,45 +35,57 @@ class SimulationController {
   }
 
   switchDisplayMode(mode) {
-    document.querySelectorAll('.output-panel').forEach(panel => {
+    if (!mode) return;
+    
+    // Hide all panels first
+    this.outputPanels.forEach(panel => {
       panel.classList.remove('active');
     });
-    const targetPanel = document.getElementById(`${mode}Output`);
-    targetPanel.classList.add('active');
+
+    // Show the selected panel
+    const targetPanel = document.querySelector(`.output-panel[data-mode="${mode}"]`);
+    if (targetPanel) {
+      targetPanel.classList.add('active');
+    }
   }
 
   runSimulation() {
-    const mantissa = this.parseMantissa(this.mantissaInput.value);
-    const exponent = parseInt(this.exponentInput.value);
-    const steps = parseInt(this.stepsInput.value);
-    const stepSize = BigInt(this.stepSizeInput.value);
+    try {
+      const mantissa = this.parseMantissa(this.mantissaInput.value);
+      const exponent = parseInt(this.exponentInput.value);
+      const steps = parseInt(this.stepsInput.value);
+      const stepSize = BigInt(this.stepSizeInput.value);
 
-    const simulator = new BigNumberSimulator(mantissa, exponent);
-    const results = [];
+      const simulator = new BigNumberSimulator(mantissa, exponent);
+      const results = [];
 
-    results.push({
-      step: 0,
-      value: simulator.toString(),
-      simulator: simulator.clone()
-    });
-
-    for (let i = 0; i < steps; i++) {
-      simulator.stepDown(stepSize);
       results.push({
-        step: i + 1,
+        step: 0,
         value: simulator.toString(),
         simulator: simulator.clone()
       });
-    }
 
-    this.displayModeInputs.forEach(input => {
-      if (input.checked) {
-        this.renderers[input.value].render(results);
+      for (let i = 0; i < steps; i++) {
+        simulator.stepDown(stepSize);
+        results.push({
+          step: i + 1,
+          value: simulator.toString(),
+          simulator: simulator.clone()
+        });
       }
-    });
+
+      const selectedMode = document.querySelector('input[name="displayMode"]:checked');
+      if (selectedMode && this.renderers[selectedMode.value]) {
+        this.renderers[selectedMode.value].render(results);
+      }
+    } catch (error) {
+      console.error('Simulation error:', error);
+      alert('Error running simulation. Please check your inputs.');
+    }
   }
 
   parseMantissa(value) {
+    if (!value) throw new Error('Mantissa value is required');
     if (value.includes('e')) {
       const [base, exp] = value.split('e').map(Number);
       return BigInt(Math.floor(base * Math.pow(10, exp)));
