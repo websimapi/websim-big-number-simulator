@@ -1,12 +1,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Big Number Simulator</title>
+  <title>Advanced Big Number Simulator</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Big Number Simulator</h1>
+    <h1>Advanced Big Number Simulator</h1>
     
     <div class="controls">
       <div class="input-group">
@@ -29,7 +31,16 @@
         <input type="text" id="stepSize" value="1">
       </div>
 
-      <button id="simulate">Simulate</button>
+      <div class="input-group">
+        <label for="animationSpeed">Animation Speed (ms):</label>
+        <input type="number" id="animationSpeed" value="100" min="10" max="1000">
+      </div>
+
+      <div class="button-group">
+        <button id="simulate">Simulate</button>
+        <button id="aiGenerate" class="ai-button">AI Generate</button>
+        <button id="toggleHistory">Show History</button>
+      </div>
     </div>
 
     <div class="display-options">
@@ -46,6 +57,10 @@
         <input type="radio" name="displayMode" value="graph">
         Line Graph
       </label>
+      <label>
+        <input type="radio" name="displayMode" value="particle">
+        Particle View
+      </label>
     </div>
 
     <div class="output-container">
@@ -56,10 +71,22 @@
       <div id="graphOutput" class="output-panel" data-mode="graph">
         <canvas id="graphCanvas"></canvas>
       </div>
+      <div id="particleOutput" class="output-panel" data-mode="particle">
+        <canvas id="particleCanvas"></canvas>
+      </div>
+    </div>
+
+    <div id="historyPanel" class="history-panel">
+      <h3>Simulation History</h3>
+      <div id="historyContent"></div>
+    </div>
+
+    <div id="aiPanel" class="ai-panel">
+      <h3>AI Insights</h3>
+      <div id="aiContent"></div>
     </div>
   </div>
   
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module" src="main.js"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
